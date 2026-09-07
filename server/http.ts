@@ -3,7 +3,7 @@
  *
  * REST API：
  *   POST /v1/ingest  { userId, text, title?, tags?[] } : 登记事件并做碰撞判定
- *   GET  /v1/context?userId=  : 叙事上下文包（含可注入 system prompt 的 promptText）
+ *   GET  /v1/context?userId=  : 叙事上下文包（promptText：多轮宿主注入本轮 user 消息头部；单轮无状态注入 system 末尾）
  *   GET  /v1/state?userId=    : 完整三层状态（调试 / 可视化用）
  *   GET  /v1/claims?userId=   : 认知层论断列表（用户可见）
  *   POST /v1/contest { userId, claimId, note } : 用户否决 → contested（非删除）

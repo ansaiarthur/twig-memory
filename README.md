@@ -51,7 +51,7 @@ npm run dev   # 记忆书前端，默认 http://localhost:7100
 
 浏览器打开 **http://localhost:7100** ——今日扉页 / 记忆书 / 故事线 / 理解文档 / 自检日志 / 设置，都在这本「书」里。
 
-刚翻开时书是空的，正常：**记忆书是引擎的展示窗**，记忆来自你接上去的 AI。客户端挂上[远程 MCP](server/README.md) 后正常聊天，事件就会流进引擎，日记、心迹、便签、印章才会一天天长出来。开发者也可以直接把事件 POST 到 `/v1/ingest`、每次回复前 GET `/v1/context` 注入 system prompt。
+刚翻开时书是空的，正常：**记忆书是引擎的展示窗**，记忆来自你接上去的 AI。客户端挂上[远程 MCP](server/README.md) 后正常聊天，事件就会流进引擎，日记、心迹、便签、印章才会一天天长出来。开发者也可以直接把事件 POST 到 `/v1/ingest`、每次回复前 GET `/v1/context` 把记忆注入本轮 user 消息头部（单轮无状态场景注入 system prompt 末尾）。
 
 > 完整 API 文档、MCP 挂载方式、Zeabur 一键部署见 [server/README.md](server/README.md)。
 
@@ -72,7 +72,7 @@ npm run dev   # 记忆书前端，默认 http://localhost:7100
   "recentFragments": [
     { "date": "8月4日", "title": "出道直播排练" }
   ],
-  "promptText": "可直接注入 system prompt 的叙事文本"
+  "promptText": "叙事上下文文本——多轮宿主注入本轮 user 消息头部；单轮无状态注入 system prompt 末尾"
 }
 ```
 

@@ -37,7 +37,7 @@ KIMI_API_KEY=sk-你的-Moonshot-API-Key
 | 方法 | 路径 | 说明 |
 |---|---|---|
 | POST | `/v1/ingest` | `{ userId, text, title?, tags?[] }` 登记事件并做碰撞判定 |
-| GET | `/v1/context?userId=` | 叙事上下文包，`promptText` 可直接注入宿主 agent 的 system prompt |
+| GET | `/v1/context?userId=` | 叙事上下文包；`promptText` 注入位置按接入形态选（两法等价），见下文「宿主 agent 的典型接法」 |
 | GET | `/v1/state?userId=` | 完整三层状态（调试/可视化用；支持 `page`/`limit` 对碎片分页） |
 | GET | `/v1/claims?userId=` | 认知层论断列表（用户默认全透明可见） |
 | POST | `/v1/contest` | `{ userId, claimId, note }` 用户否决 → contested（不删除、不假改） |
@@ -145,7 +145,11 @@ args = ["tsx", "D:/kimi/workspace/muninn/server/mcp.ts"]
 ## 宿主 agent 的典型接法
 
 1. 每轮对话结束后，把用户新表达的事实/状态变化 `memory_ingest` 给引擎。
-2. 每轮对话开始前（或定期）取 `memory_context`，把 `promptText` 注入 system prompt——
+2. 每轮对话开始前（或定期）取 `memory_context`，把 `promptText` 按接入形态注入（两法等价，按有没有跨轮历史要保护选）：
+   - **多轮常驻宿主**（host-loop / 长期接入）：拼进**本轮 user 消息头部**——system 只留稳定
+     人设、会话历史 append-only 且只存原文，变动块固定在末尾，前缀缓存跨轮命中
+     （参考实现 `server/host-loop.ts`）；
+   - **单轮无状态**（cron+curl、每次全新会话）：没有历史可保护，注入 system prompt 末尾即可。
    拿到的是「叙事上下文包」：进行中的线索 + 当前理解（带置信度）+ 近期事件，不是 top-k 卡片。
 3. 用户要求查看/更正记忆时，用 `memory_list_claims` / `memory_contest_claim`。
 4. 每天一次（或批量事件后）调用 `memory_reflect` / `POST /v1/reflect` 反刍：

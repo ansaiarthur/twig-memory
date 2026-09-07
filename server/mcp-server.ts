@@ -39,7 +39,7 @@ export function createMcpServer(manager: EngineManager): McpServer {
   server.registerTool(
     'memory_context',
     {
-      description: '取该用户的叙事上下文包：进行中的线索、对用户的当前理解（带置信度）、近期事件。promptText 字段可直接注入 system prompt。',
+      description: '取该用户的叙事上下文包：进行中的线索、对用户的当前理解（带置信度）、近期事件。promptText 注入位置按接入形态选（两法等价）：多轮常驻宿主拼进本轮 user 消息头部（护住前缀缓存，参考 host-loop）；单轮无状态注入 system prompt 末尾即可。',
       inputSchema: { userId: z.string().describe('用户标识') },
     },
     async ({ userId }) => {

@@ -188,7 +188,7 @@ export interface ContextPacket {
   threads: { id: string; label: string; openQuestion: string; pool: string; daysOpen: number; dragonVein: number }[]
   claims: { id: string; text: string; conviction: number; boundary: string; status: string }[]
   recentFragments: { id: string; date: string; title: string }[]
-  /** 可直接注入宿主 agent system prompt 的叙事上下文文本块 */
+  /** 叙事上下文文本块：多轮常驻宿主注入本轮 user 消息头部（护前缀缓存）；单轮无状态注入 system prompt 末尾即可 */
   promptText: string
   /** 最近印章（情感层），注入宿主上下文用 */
   recentStamps?: RecentStamp[]
