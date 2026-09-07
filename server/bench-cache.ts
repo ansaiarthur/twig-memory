@@ -132,7 +132,7 @@ const MAX_HISTORY = 20
 
 function apiConfig() {
   const apiKey = process.env.MUNINN_API_KEY || process.env.KIMI_API_KEY
-  const model = process.env.MUNINN_MODEL || 'moonshot-v1-8k'
+  const model = process.env.MUNINN_MODEL || 'kimi-k2.6'
   const baseUrl = (process.env.MUNINN_BASE_URL || 'https://api.moonshot.cn').replace(/\/+$/, '').replace(/\/v1$/, '')
   return { apiKey, model, baseUrl }
 }

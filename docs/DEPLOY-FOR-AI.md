@@ -24,7 +24,8 @@
 | 前端连后端 | 默认连 `http://localhost:7300`（可用环境变量 `VITE_API_BASE` 改） |
 | 密钥文件 | 仓库根目录新建 `.env.local`（已被 .gitignore 排除，不会进 git） |
 | `KIMI_API_KEY` | Moonshot 密钥（platform.moonshot.cn 申请）。**可选**：不配则引擎回退规则判定，但反刍、审计、日记与便签生成等 LLM 功能不可用 |
-| `SF_API_KEY` | 硅基流动密钥（可选，向量召回加速器） |
+| `SF_API_KEY` | 硅基流动密钥（可选，向量召回加速器；**只管向量召回、不管主模型**） |
+| `MUNINN_MODEL` | 主模型名，缺省 `kimi-k2.6`（现役）。换供应商须三件套同改：`MUNINN_BASE_URL` + `MUNINN_API_KEY` + `MUNINN_MODEL`（例：DeepSeek 官方 = `https://api.deepseek.com` + DeepSeek 密钥 + `deepseek-v4-flash`） |
 | `MUNINN_AUTH_TOKEN` | 云端部署的访问令牌（自设一个长随机串，强烈建议） |
 | 健康检查 | `GET /health` 应返回 `{"ok":true,...}` |
 | 远程 MCP 端点 | `/mcp`（新版客户端优先）、`/sse`（旧版客户端兜底） |
@@ -113,6 +114,7 @@ args = ["tsx", "D:/你的路径/twig-memory/server/mcp.ts"]
 | 7300 被占用 | `PORT=7400 npm run server:http`（Windows PowerShell：`$env:PORT=7400; npm run server:http`），同时前端 `.env.local` 加 `VITE_API_BASE=http://localhost:7400` |
 | 7100 打开空白或报错 | 确认 `server:http` 那个终端**也在跑**；两个终端都要保持开着 |
 | `/health` 里 `llm` 是 `heuristic-only` | key 没生效：检查 `.env.local` 是否在仓库根目录、变量名是否拼对、改完是否重启了 server |
+| 反刍/审计等 LLM 功能转久后失败（404 / resource_not_found） | 查 `MUNINN_MODEL` 是否为已退役模型（如 moonshot-v1 系列）：换现役模型（缺省 `kimi-k2.6`）并重启 server |
 | 手机 App 连不上 MCP | `/mcp` 换 `/sse`；核对 Bearer 后的令牌与 `MUNINN_AUTH_TOKEN` 完全一致；确认是 https |
 | Zeabur 重启后记忆丢了 | 没挂卷：Volumes 挂到 `/data` 后重新部署 |
 | 配置 API base 类地址 | **不要自己加 `/v1` 后缀**——OpenAI 兼容生态最常见的坑，代码已自动归一化，多写一个 `/v1` 会 404 |

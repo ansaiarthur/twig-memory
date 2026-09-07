@@ -5,7 +5,9 @@
  */
 
 const TIMEOUT_MS = 10000
-const MODEL = 'moonshot-v1-8k'
+/** 主模型随 MUNINN_MODEL（与 server/llm-node.ts 同口径，缺省现役 kimi-k2.6）。
+ *  浏览器侧无 process 全局，走 globalThis 探测，取不到即落缺省 */
+const MODEL = (globalThis as { process?: { env?: Record<string, string> } }).process?.env?.MUNINN_MODEL || 'kimi-k2.6'
 
 export interface ChatMessage { role: 'system' | 'user' | 'assistant'; content: string }
 

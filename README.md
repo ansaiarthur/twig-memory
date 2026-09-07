@@ -35,6 +35,8 @@ npm install
 KIMI_API_KEY=sk-你的-Moonshot-API-Key
 ```
 
+缺省模型 kimi-k2.6（现役）；换模型 / 换供应商用 `MUNINN_MODEL`（三件套同改 `MUNINN_BASE_URL` / `MUNINN_API_KEY`）。
+
 不配也能跑：引擎自动回退规则判定，基础功能照常。但反刍、盲推导审计、日记与便签生成这些标注「需 key」的 LLM 功能会不可用——想见到完整的衔枝，建议配上。
 
 ### 3. 启动服务端

@@ -30,6 +30,8 @@ npm run server:http          # http://localhost:7300
 ```bash
 # .env.local 或环境变量
 KIMI_API_KEY=sk-你的-Moonshot-API-Key
+# 主模型缺省 kimi-k2.6（现役）；换供应商须三件套同改：MUNINN_BASE_URL + MUNINN_API_KEY + MUNINN_MODEL
+# MUNINN_MODEL=deepseek-v4-flash   # 例：DeepSeek 官方（MUNINN_BASE_URL=https://api.deepseek.com）
 ```
 
 ## HTTP API
@@ -182,7 +184,7 @@ args = ["tsx", "D:/kimi/workspace/muninn/server/mcp.ts"]
 2. **强制裁决留痕**：每条命中反证必须被显式回应——推翻 / 加限定 / 写明为什么不足以推翻，说明写入 `counterEvidence`，不许悄悄吞掉。
 3. **防教条化**：反证全部被「解释掉」时，代码强制置信度小幅衰减（-0.03，不信任 LLM 自律）；论断未改动也留版本记录，衰减可审计。
 
-异源配置：默认同模型 persona+温度异源；设置 `MUNINN_ADVERSARY_MODEL`（如 `moonshot-v1-32k`）
+异源配置：默认同模型 persona+温度异源；设置 `MUNINN_ADVERSARY_MODEL`（如 `deepseek-v4-flash`，跨供应商真异源）
 可让红队用第二模型，实现真正的模型异源。这是设计债务③的**缓解而非根治**——同源数据下
 的自我对抗天花板依然存在，已写进局限性。
 
